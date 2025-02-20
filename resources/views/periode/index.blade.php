@@ -1,7 +1,5 @@
-<h1 class="text-center my-3">Master periode</h1>
-
-<div class="container">
-    <div class="card shadow-lg">
+@extends('layout.main')
+@section('content')
         <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Data periode</h5>
             <a href="{{ route('periode.create') }}" class="btn btn-success btn-sm">Tambah Data</a>
@@ -49,6 +47,4 @@
         </div>
     </div>
 </div>
-
-<!-- Tambahkan FontAwesome untuk ikon -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+@endsection

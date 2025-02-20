@@ -1,7 +1,6 @@
-<h1 class="text-center my-3">Master pegawai</h1>
+@extends('layout.main')
+@section('content')
 
-<div class="container">
-    <div class="card shadow-lg">
         <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Data pegawai</h5>
             <a href="{{ route('pegawai.create') }}" class="btn btn-success btn-sm">Tambah Data</a>
@@ -44,8 +43,4 @@
                 </tbody>
             </table>
         </div>
-    </div>
-</div>
-
-<!-- Tambahkan FontAwesome untuk ikon -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+@endsection

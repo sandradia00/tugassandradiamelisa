@@ -1,4 +1,5 @@
-
+@extends('layout.main')
+@section('content')
 <h3>Edit Data</h3>
 <form action="{{ route('pegawai.update', $pegawai->id) }}" method="post">
     @csrf
@@ -18,3 +19,4 @@
         </tr>
     </table>
 </form>
+@endsection

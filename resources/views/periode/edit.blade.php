@@ -1,4 +1,5 @@
-
+@extends('layout.main')
+@section('content')
 <h3>Edit Data</h3>
 <form action="{{ route('periode.update', $periode->id) }}" method="post">
     @csrf
@@ -24,3 +25,4 @@
         </tr>
     </table>
 </form>
+@endsection
