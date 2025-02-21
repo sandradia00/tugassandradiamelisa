@@ -34,6 +34,15 @@
                     <i class="fas fa-user"></i> Periode</a>
                     </li>
                     
+                    <li class="nav-item">
+                    <a class="nav-link {{ request()->segment('1') =='kelompok'  ? 'active' : '' }}" aria-current="page" href="{{ route('kelompok.index') }}">
+                    <i class="fas fa-user"></i> Kelompok</a>
+                    </li>
+
+                    <li class="nav-item">
+                    <a class="nav-link {{ request()->segment('1') =='user'  ? 'active' : '' }}" aria-current="page" href="{{ route('user.index') }}">
+                    <i class="fas fa-user"></i> User</a>
+                    </li>
 
                 <li class="nav-item">
                 <a class="nav-link {{ request()->segment('1') =='jadwal'  ? 'active' : '' }}" aria-current="page" href="">

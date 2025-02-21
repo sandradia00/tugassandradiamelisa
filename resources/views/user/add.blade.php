@@ -1,4 +1,5 @@
-
+@extends('layout.main')
+@section('content')
 <h31>Tambah Data</h3>
 <form action="{{ route('user.store') }}" method="post" enctype="multipart/form-data">
     @csrf
@@ -26,4 +27,4 @@
         </tr>
     </table>
 </form>
-
+@endsection
