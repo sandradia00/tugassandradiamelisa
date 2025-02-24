@@ -1,68 +1,51 @@
-<h1 class="text-center my-3">Master jurnal</h1>
-
+@extends('layout.main')
+@section('content')
 <div class="container">
-    <div class="card shadow-lg">
-        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Data jurnal</h5>
-            <a href="{{ route('jurnal.create') }}" class="btn btn-success btn-sm">Tambah Data</a>
-        </div>
+    <h2>Data Jurnal</h2>
+    <a href="{{ route('jurnal.create') }}" class="btn btn-success mb-3">Tambah Data</a>
+    <table class="table table-sm table-striped table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Kode Jurnal</th>
+                <th>Tanggal Selesai</th>
+                <th>Transaksi ID</th>
+                <th>Nomor Perkiraan</th>
+                <th>Nama Perkiraan</th>
+                <th>Tanggal Transaksi</th>
+                <th>Jenis Transaksi</th>
+                <th>Keterangan</th>
+                <th>Debet</th>
+                <th>Kredit</th>
+                <th>Aksi</th>  <!-- Tambahkan kolom Aksi -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($jurnalData as $data)
+            <tr>
+                <td>{{ $data->JurnalKode }}</td>
+                <td>{{ optional($data->hjurnal)->TanggalSelesai ?? '-' }}</td>
+                <td>{{ $data->TransaksiID }}</td>
+                <td>{{ $data->NomorPerkiraan }}</td>
+                <td>{{ optional($data->akun)->nama_perkiraan ?? '-' }}</td>
+                <td>{{ $data->TanggalTransaksi }}</td>
+                <td>{{ $data->jenis_transaksi }}</td>
+                <td>{{ $data->Keterangan ?? '-' }}</td>
+                <td>{{ number_format($data->debet, 2) }}</td>
+                <td>{{ number_format($data->kredit, 2) }}</td>
+                <td>
+                    <!-- Tombol Edit -->
+                    <a href="{{ route('jurnal.edit', $data->TransaksiID) }}" class="btn btn-warning">Edit</a> |
 
-        <div class="card-body">
-            <table class="table table-sm table-striped table-hover table-bordered">
-                <thead class="bg-dark text-white">
-                    <tr>
-                        <th>No</th>
-                        <th>Transaksi Id</th>
-                        <th>Jurnal Kode</th>
-                        <th>Nomor Perkiraan</th>
-                        <th>Tanggal Transaksi</th>
-                        <th>Jenis Transaksi</th>
-                        <th>Keterangan</th>
-                        <th>Debet</th>
-                        <th>Kredit</th>
-                        <th>Tanggal Posting</th>
-                        <th>Keterangan Posting</th>
-                        <th>ID User</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($jurnal as $item)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->TransaksiId }}</td>
-                            <td>{{ $item->JurnalKode }}</td>
-                            <td>{{ $item->NomorPerkiraan }}</td>
-                            <td>{{ $item->TanggalTransaksi }}</td>
-                            <td>{{ $item->JenisTransaksi }}</td>
-                            <td>{{ $item->Keterangan }}</td>
-                            <td>{{ $item->Debet }}</td>
-                            <td>{{ $item->Kredit }}</td>
-                            <td>{{ $item->tanggal_posting }}</td>
-                            <td>{{ $item->keterangan_posting }}</td>
-                            <td>{{ $item->sIdUser }}</td>
-                            <td class="text-center">
-                                <form onsubmit="return confirm('Apakah Anda Yakin ?');" 
-                                      action="{{ route('jurnal.destroy', $item->id) }}" method="POST">
-                                    <a href="{{ route('jurnal.show', $item->id) }}" class="btn btn-sm btn-secondary">
-                                        <i class="fas fa-eye"></i> Show
-                                    </a>
-                                    <a href="{{ route('jurnal.edit', $item->id) }}" class="btn btn-sm btn-primary">
-                                        <i class="fas fa-edit"></i> Edit
-                                    </a>
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">
-                                        <i class="fas fa-trash"></i> Hapus
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
+                    <!-- Tombol Hapus dengan Konfirmasi -->
+                    <form action="{{ route('jurnal.destroy', $data->TransaksiID) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 </div>
-
-<!-- Tambahkan FontAwesome untuk ikon -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+@endsection

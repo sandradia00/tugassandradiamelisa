@@ -40,6 +40,11 @@
                     </li>
 
                     <li class="nav-item">
+                    <a class="nav-link {{ request()->segment('1') =='jurnal'  ? 'active' : '' }}" aria-current="page" href="{{ route('jurnal.index') }}">
+                    <i class="fas fa-user"></i> Jurnal Umum</a>
+                    </li>
+
+                    <li class="nav-item">
                     <a class="nav-link {{ request()->segment('1') =='user'  ? 'active' : '' }}" aria-current="page" href="{{ route('user.index') }}">
                     <i class="fas fa-user"></i> User</a>
                     </li>

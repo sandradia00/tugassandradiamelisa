@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JurnalModel;
+use App\Models\DJurnalModel;
+use App\Models\HJurnalModel;
 use Illuminate\Http\Request;
+use App\HJurnal;
 
 class JurnalController extends Controller
 {
@@ -12,8 +14,10 @@ class JurnalController extends Controller
      */
     public function index()
     {
-        $jurnal=JurnalModel::get();
-        return view ('jurnal.index', compact('jurnal'));
+        // Mengambil data dengan relasi ke Hjurnal dan Akuntansi Master
+        $jurnalData = DjurnalModel::with(['hjurnal', 'akun'])->get();
+
+        return view('jurnal.index', compact('jurnalData'));
     }
 
     
@@ -24,60 +28,52 @@ class JurnalController extends Controller
 
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'img'        => 'required|image|mimes:jpeg,jpg,png|max:2048',
-        //     'Namajurnal'   => 'required'
-        // ]);
-        // $image = $request->file('img');
-        // $image->storeAs('public/img', $image->hashName());
 
-        $jurnal = new JurnalModel();
-        $jurnal->TransaksiId = $request->TransaksiId;
-        $jurnal->JurnalKode = $request->JurnalKode;
-        $jurnal->NomorPerkiraan = $request->NomorPerkiraan;
-        $jurnal->TanggalTransaksi = $request->TanggalTransaksi;
-        $jurnal->JenisTransaksi = $request->JenisTransaksi;
-        $jurnal->Keterangan = $request->Keterangan;
-        $jurnal->Debet = $request->Debet;
-        $jurnal->Kredit = $request->Kredit;
-        $jurnal->tanggal_posting = $request->tanggal_posting;
-        $jurnal->keterangan_posting = $request->keterangan_posting;
-        $jurnal->sIdUser = $request->sIdUser;
-        // $jurnal->img      = $image->hashName();
-        $jurnal->save();
-        return redirect('jurnal');
+        // dd($request->all());
+        $data = new DJurnalModel();
+        $data->JurnalKode = $request->JurnalKode;
+        $data->NomorPerkiraan = $request->NomorPerkiraan;
+        $data->TanggalTransaksi = $request->TanggalTransaksi;
+        $data->jenis_transaksi = $request->jenis_transaksi;
+        $data->Keterangan = $request->Keterangan;
+        $data->debet = $request->debet;
+        $data->kredit = $request->kredit;
+        $data->save();
+
+    return redirect()->route('jurnal.index')->with('success', 'Data berhasil ditambahkan!');
+
+        return redirect()->route('jurnal.index')->with('success', 'Data jurnal berhasil ditambahkan.');
     }
-
-    public function show(string $id)
+    
+    public function edit($id)
     {
-        //
-    }
-
-    public function edit(string $id)
-    {
-        $jurnal = JurnalModel::find($id);
+        $jurnal = DJurnalModel::findOrFail($id);
         return view('jurnal.edit', compact('jurnal'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        $jurnal = JurnalModel::find($id);
-        $jurnal->TanggalTransaksi = $request->TanggalTransaksi;
-        $jurnal->JenisTransaksi = $request->JenisTransaksi;
-        $jurnal->Keterangan = $request->Keterangan;
-        $jurnal->Debet = $request->Debet;
-        $jurnal->Kredit = $request->Kredit;
-        $jurnal->tanggal_posting = $request->tanggal_posting;
-        $jurnal->keterangan_posting = $request->keterangan_posting;
-        $jurnal->sIdUser = $request->sIdUser;
-        $jurnal->save();
-        return redirect('jurnal');
+        $request->validate([
+            'JurnalKode' => 'required|string|max:255',
+            'NomorPerkiraan' => 'required|string|max:255',
+            'TanggalTransaksi' => 'required|date',
+            'jenis_transaksi' => 'required|string|max:255',
+            'Keterangan' => 'required|string',
+            'debet' => 'required|numeric',
+            'kredit' => 'required|numeric',
+        ]);
+
+        $jurnal = DJurnalModel::findOrFail($id);
+        $jurnal->update($request->all());
+
+        return redirect()->route('jurnal.index')->with('success', 'Data jurnal berhasil diperbarui!');
     }
 
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $product = JurnalModel::findOrFail($id);
-        $product->delete();
-        return redirect()->route('jurnal.index')->with(['success' => 'Data Berhasil Dihapus!']);        
+        $jurnal = DJurnalModel::findOrFail($id);
+        $jurnal->delete();
+
+        return redirect()->route('jurnal.index')->with('success', 'Data jurnal berhasil dihapus!');
     }
 }
